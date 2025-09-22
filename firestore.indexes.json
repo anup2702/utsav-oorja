@@ -1,0 +1,15 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "pandals",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "votes",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
