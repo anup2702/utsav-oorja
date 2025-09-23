@@ -17,6 +17,7 @@ import WelcomeScreen from './components/WelcomeScreen.jsx';
 import VoteDebugPanel from './components/VoteDebugPanel.jsx';
 import { initGA } from './utils/analytics.js';
 import { useAnalytics } from './hooks/useAnalytics.js';
+// import { Analytics } from "@vercel/analytics/react" // TODO: Enable once package is installed
 import { 
   Building2, 
   MapPin, 
@@ -150,6 +151,7 @@ const AppContent = () => {
 
   if (error) {
     return (
+      
       <div className="min-h-screen bg-bg-secondary">
         <Header />
         <div className="flex justify-center items-center py-20">
@@ -160,6 +162,7 @@ const AppContent = () => {
             <p className="text-sm text-text-tertiary">
               Please check your internet connection and try again
             </p>
+            {/* <Analytics /> TODO: Enable once package is installed */}
           </div>
         </div>
       </div>
