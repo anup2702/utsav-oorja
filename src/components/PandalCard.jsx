@@ -4,6 +4,7 @@ import { db } from '../firebase';
 import { useTranslation } from '../hooks/useTranslation';
 import { useFavorites } from '../contexts/FavoritesContext';
 import { trackAppEvents } from '../utils/analytics.js';
+import voteManager from '../utils/voteManager.js';
 import { 
   Heart, 
   Clock, 
@@ -16,31 +17,27 @@ import {
   Share2
 } from 'lucide-react';
 
-const PandalCard = ({ pandal }) => {
+const PandalCard = React.memo(({ pandal }) => {
   const [isVoting, setIsVoting] = useState(false);
   const [localVotes, setLocalVotes] = useState(pandal.votes);
   const [voteAnimation, setVoteAnimation] = useState(false);
   const [translatedPandal, setTranslatedPandal] = useState(pandal);
+  const [hasVoted, setHasVoted] = useState(false);
   const { t, translatePandal } = useTranslation();
   const { toggleFavorite, isFavorite } = useFavorites();
 
-  // Translate pandal data when language changes
+  // Use original pandal data for now to avoid API performance issues
   useEffect(() => {
-    const translatePandalData = async () => {
-      try {
-        const translated = await translatePandal(pandal);
-        setTranslatedPandal(translated);
-      } catch (error) {
-        console.error('Error translating pandal:', error);
-        setTranslatedPandal(pandal);
-      }
-    };
+    setTranslatedPandal(pandal);
+  }, [pandal]);
 
-    translatePandalData();
-  }, [pandal, translatePandal]);
+  // Check if user has already voted for this pandal
+  useEffect(() => {
+    setHasVoted(voteManager.hasVoted(pandal.id));
+  }, [pandal.id]);
 
   const handleVote = async () => {
-    if (isVoting) return;
+    if (isVoting || hasVoted) return;
     
     setIsVoting(true);
     setVoteAnimation(true);
@@ -50,7 +47,15 @@ const PandalCard = ({ pandal }) => {
       await updateDoc(pandalRef, {
         votes: increment(1)
       });
+      
+      // Update local state
       setLocalVotes(prev => prev + 1);
+      setHasVoted(true);
+      
+      // Store vote in localStorage
+      voteManager.addVote(pandal.id);
+      
+      // Track analytics
       trackAppEvents.pandalVote(translatedPandal.name);
     } catch (error) {
       console.error('Error voting:', error);
@@ -200,15 +205,23 @@ const PandalCard = ({ pandal }) => {
             {/* Vote Button - App Style */}
             <button
               onClick={handleVote}
-              disabled={isVoting}
-              className={`relative overflow-hidden bg-primary hover:bg-primary-dark disabled:bg-secondary-light text-white px-4 py-2 rounded-full transition-all duration-200 flex items-center shadow-sm ${voteAnimation ? 'animate-scale-press' : ''}`}
+              disabled={isVoting || hasVoted}
+              className={`relative overflow-hidden px-4 py-2 rounded-full transition-all duration-200 flex items-center shadow-sm ${
+                hasVoted 
+                  ? 'bg-success text-white cursor-not-allowed' 
+                  : isVoting 
+                    ? 'bg-secondary-light text-text-tertiary cursor-not-allowed'
+                    : 'bg-primary hover:bg-primary-dark text-white'
+              } ${voteAnimation ? 'animate-scale-press' : ''}`}
+              title={hasVoted ? 'You have already voted for this pandal' : 'Vote for this pandal'}
             >
               {isVoting ? (
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
               ) : (
                 <>
-                  <Heart className={`w-4 h-4 mr-1 ${voteAnimation ? 'animate-bounce' : ''}`} />
+                  <Heart className={`w-4 h-4 mr-1 ${voteAnimation ? 'animate-bounce' : ''} ${hasVoted ? 'fill-current' : ''}`} />
                   <span className="font-inter font-semibold text-sm">{localVotes}</span>
+                  {hasVoted && <span className="ml-1 text-xs">✓</span>}
                 </>
               )}
             </button>
@@ -269,6 +282,6 @@ const PandalCard = ({ pandal }) => {
       </div>
     </div>
   );
-};
+});
 
 export default PandalCard;

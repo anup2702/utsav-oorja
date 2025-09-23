@@ -37,24 +37,6 @@ const completePandalData = [
     votes: 1250
   },
   {
-    name: "College Square Sarbojanin",
-    location: "College Street, Central Kolkata",
-    timings: "5:30 AM - 12:00 AM",
-    mapsLink: "https://maps.google.com/?q=College+Square+Kolkata",
-    imageURL: "/images/collegesquare.jpg",
-    description: "Historic pandal with beautiful water reflections and traditional architecture. One of the most iconic pandals in Kolkata.",
-    crowdStatus: "High",
-    instagrammableSpots: "Reflection in water, traditional architecture, evening lighting, historic setting",
-    tips: "Evening visits offer beautiful lighting for photos. Best time is 6-8 PM. Very crowded during peak hours.",
-    metroStation: {
-      name: "Central",
-      line: "East-West",
-      distance: "0.5 km",
-      walkTime: "6 minutes"
-    },
-    votes: 1180
-  },
-  {
     name: "Santosh Mitra Square",
     location: "Bowbazar, Central Kolkata",
     timings: "6:00 AM - 11:30 PM",

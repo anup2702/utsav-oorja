@@ -14,6 +14,7 @@ import { WelcomeProvider, useWelcome } from './contexts/WelcomeContext.jsx';
 import { useTranslation } from './hooks/useTranslation.js';
 import { useFavorites } from './contexts/FavoritesContext.jsx';
 import WelcomeScreen from './components/WelcomeScreen.jsx';
+import VoteDebugPanel from './components/VoteDebugPanel.jsx';
 import { initGA } from './utils/analytics.js';
 import { useAnalytics } from './hooks/useAnalytics.js';
 import { 
@@ -41,6 +42,7 @@ const AppContent = () => {
   const [selectedArea, setSelectedArea] = useState('');
   const [sortBy, setSortBy] = useState('votes-desc');
   const [activeTab, setActiveTab] = useState('pandals');
+  const [showVoteDebug, setShowVoteDebug] = useState(false);
   const { t, translatePandals } = useTranslation();
   const { favorites, favoritesCount } = useFavorites();
   const { showWelcome, closeWelcome } = useWelcome();
@@ -49,6 +51,19 @@ const AppContent = () => {
   // Initialize analytics
   useEffect(() => {
     initGA();
+  }, []);
+
+  // Keyboard shortcut for vote debug panel (Ctrl+Shift+V)
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.shiftKey && event.key === 'V') {
+        event.preventDefault();
+        setShowVoteDebug(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   useEffect(() => {
@@ -74,22 +89,12 @@ const AppContent = () => {
     return () => unsubscribe();
   }, []);
 
-  // Translate pandals when language changes
+  // Use original pandals for now to avoid API performance issues
   useEffect(() => {
-    const translatePandalsData = async () => {
-      if (pandals.length > 0) {
-        try {
-          const translated = await translatePandals(pandals);
-          setTranslatedPandals(translated);
-        } catch (error) {
-          console.error('Error translating pandals:', error);
-          setTranslatedPandals(pandals);
-        }
-      }
-    };
-
-    translatePandalsData();
-  }, [pandals, translatePandals]);
+    if (pandals.length > 0) {
+      setTranslatedPandals(pandals);
+    }
+  }, [pandals]);
 
   // Extract unique areas for filter dropdown
   const areas = useMemo(() => {
@@ -101,36 +106,46 @@ const AppContent = () => {
     return Array.from(areaSet).sort();
   }, [translatedPandals]);
 
-  // Filter and sort pandals
+  // Filter and sort pandals with performance optimization
   const filteredAndSortedPandals = useMemo(() => {
-    let filtered = translatedPandals.filter(pandal => {
-      const matchesSearch = pandal.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           pandal.location.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      const matchesArea = !selectedArea || 
-                         pandal.location.toLowerCase().includes(selectedArea.toLowerCase());
-      
-      return matchesSearch && matchesArea;
-    });
+    if (!translatedPandals.length) return [];
+    
+    let filtered = translatedPandals;
+    
+    // Apply search filter
+    if (searchTerm.trim()) {
+      const searchLower = searchTerm.toLowerCase();
+      filtered = filtered.filter(pandal => 
+        pandal.name.toLowerCase().includes(searchLower) ||
+        pandal.location.toLowerCase().includes(searchLower)
+      );
+    }
+    
+    // Apply area filter
+    if (selectedArea) {
+      const areaLower = selectedArea.toLowerCase();
+      filtered = filtered.filter(pandal => 
+        pandal.location.toLowerCase().includes(areaLower)
+      );
+    }
 
     // Sort the filtered results
-    filtered.sort((a, b) => {
+    return [...filtered].sort((a, b) => {
       switch (sortBy) {
         case 'votes-desc':
-          return b.votes - a.votes;
+          return (b.votes || 0) - (a.votes || 0);
         case 'votes-asc':
-          return a.votes - b.votes;
+          return (a.votes || 0) - (b.votes || 0);
         case 'name-asc':
           return a.name.localeCompare(b.name);
         case 'name-desc':
           return b.name.localeCompare(a.name);
         default:
-          return b.votes - a.votes;
+          return (b.votes || 0) - (a.votes || 0);
       }
     });
-
-    return filtered;
   }, [translatedPandals, searchTerm, selectedArea, sortBy]);
+
 
 
   if (error) {
@@ -143,7 +158,7 @@ const AppContent = () => {
             <h2 className="text-xl font-inter font-bold text-text-primary mb-2">{t('error')}</h2>
             <p className="text-text-secondary mb-4">{error}</p>
             <p className="text-sm text-text-tertiary">
-              Please update your Firebase configuration in src/firebase.js
+              Please check your internet connection and try again
             </p>
           </div>
         </div>
@@ -548,6 +563,12 @@ const AppContent = () => {
           </button>
         </div>
       </div>
+
+      {/* Vote Debug Panel */}
+      <VoteDebugPanel 
+        isOpen={showVoteDebug} 
+        onClose={() => setShowVoteDebug(false)} 
+      />
     </div>
   );
 };

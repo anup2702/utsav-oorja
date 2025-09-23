@@ -90,8 +90,8 @@ const AIChatbot = ({ pandals }) => {
             <Bot className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h2 className="text-lg font-baloo font-bold text-text-primary">AI Pandal Assistant</h2>
-            <p className="text-sm font-poppins text-gray-600">Powered by Gemini AI</p>
+            <h2 className="text-lg font-baloo font-bold text-text-primary">Your Pujoo Sathi</h2>
+            <p className="text-sm font-poppins text-gray-600">Powered by Utsav Oorja</p>
           </div>
         </div>
       </div>

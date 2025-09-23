@@ -28,7 +28,7 @@ const LanguageSwitcher = () => {
       >
         <Globe className="w-4 h-4" />
         <span className="text-sm font-inter font-medium">
-          {currentLanguage?.flag} {currentLanguage?.name}
+          {currentLanguage?.name}
         </span>
       </button>
 
@@ -51,7 +51,7 @@ const LanguageSwitcher = () => {
                 }`}
               >
                 <div className="flex items-center space-x-3">
-                  <span className="text-lg">{lang.flag}</span>
+                
                   <span className="font-inter text-sm text-text-primary">
                     {lang.name}
                   </span>

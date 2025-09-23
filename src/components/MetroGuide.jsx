@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Train, Map, Clock, CreditCard, Info, X, ChevronLeft } from 'lucide-react';
 import { useTranslation } from '../hooks/useTranslation';
 
-const MetroGuide = ({ pandals }) => {
+const MetroGuide = React.memo(({ pandals }) => {
   const [selectedStation, setSelectedStation] = useState(null);
   const [selectedLine, setSelectedLine] = useState(null);
-  const [activeLineFilter, setActiveLineFilter] = useState('all'); // 'all' or specific line name
+  const [activeLineFilter, setActiveLineFilter] = useState('Blue Line'); // Default to Blue Line
   const { t } = useTranslation();
 
   // Metro lines data for Kolkata
@@ -38,6 +38,20 @@ const MetroGuide = ({ pandals }) => {
         "New Garia", "Garia Bazar", "Narendrapur", "Sonarpur", "Baghajatin", 
         "Jadavpur", "Tollygunge", "Rabindra Sarobar", "Mahanayak Uttam Kumar", 
         "Netaji", "Masterda Surya Sen", "Gitanjali", "Kavi Nazrul", "Shahid Khudiram"
+      ]
+    },
+    {
+      name: "Yellow Line",
+      color: "#FFD700", 
+      stations: [
+        "Noapara", "Dum Dum Cantonment", "Jessore Road", "Jai Hind (Airport)"
+      ]
+    },
+    {
+      name: "Purple Line",
+      color: "#800080", 
+      stations: [
+        "Joka", "Thakurpukur", "Sakherbazar", "Behala Chowrasta", "Behala Bazar", "Taratala", "Majerhat"
       ]
     }
   ];
@@ -90,21 +104,13 @@ const MetroGuide = ({ pandals }) => {
             <div>
               <h4 className="text-lg font-baloo font-bold text-text-primary">Select Metro Line</h4>
               <p className="text-gray-600 font-poppins text-sm mt-1">
-                {activeLineFilter === 'all' 
-                  ? 'Choose a metro line to view its stations and nearby pandals.'
-                  : `Viewing ${activeLineFilter} stations and nearby pandals.`
-                }
+                
+                  Choose a metro line to view its stations and nearby pandals.
+                 
+              
               </p>
             </div>
-            {activeLineFilter !== 'all' && (
-              <button
-                onClick={() => handleLineFilter('all')}
-                className="flex items-center px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200"
-              >
-                <ChevronLeft className="w-4 h-4 mr-1" />
-                <span className="text-sm font-poppins">Back to All</span>
-              </button>
-            )}
+            
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -119,7 +125,7 @@ const MetroGuide = ({ pandals }) => {
                   onClick={() => handleLineFilter(line.name)}
                   className={`p-4 rounded-xl border-2 transition-all duration-200 ${
                     activeLineFilter === line.name
-                      ? 'border-gray-400 bg-gray-100 shadow-md'
+                      ? 'border-primary bg-primary/10 shadow-md'
                       : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
                   }`}
                 >
@@ -130,7 +136,7 @@ const MetroGuide = ({ pandals }) => {
                     >
                       <Train className="w-4 h-4 text-white" />
                     </div>
-                    <div className="font-poppins font-semibold text-text-primary text-sm">{line.name}</div>
+                    
                     
                   </div>
                 </button>
@@ -144,9 +150,7 @@ const MetroGuide = ({ pandals }) => {
           <h4 className="text-lg font-baloo font-bold text-text-primary">
             {activeLineFilter === 'all' ? 'All Metro Lines' : `${activeLineFilter} Metro Map`}
           </h4>
-          <p className="text-gray-600 font-poppins text-sm mb-4">
-            Click on stations with pandals to see the list of pandals near that station.
-          </p>
+        
           
           {getFilteredLines().map((line, lineIndex) => (
             <div key={lineIndex} className="border border-gray-200 rounded-lg p-4">
@@ -366,6 +370,6 @@ const MetroGuide = ({ pandals }) => {
       )}
     </div>
   );
-};
+});
 
 export default MetroGuide;
