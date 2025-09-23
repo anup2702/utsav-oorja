@@ -35,7 +35,7 @@ const WelcomeScreen = ({ onClose }) => {
           <div className="mb-6">
             <div className="w-20 h-20 mx-auto mb-4 flex items-center justify-center">
               <img 
-                src="/logo.png" 
+                src="/logo_welcome.png" 
                 alt="App Logo" 
                 className="w-16 h-16 object-contain"
                 onError={(e) => {

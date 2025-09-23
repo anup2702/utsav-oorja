@@ -39,7 +39,7 @@ const Header = ({ activeTab, setActiveTab }) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <img 
-              src="/logo.png" 
+              src="/logo_header.png" 
               alt="App Logo" 
               className="w-10 h-10 object-contain"
               onError={(e) => {

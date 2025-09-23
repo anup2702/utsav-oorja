@@ -14,7 +14,8 @@ import {
   Lightbulb, 
   Navigation,
   Phone,
-  Share2
+  Share2,
+  Video
 } from 'lucide-react';
 
 const PandalCard = React.memo(({ pandal }) => {
@@ -267,19 +268,39 @@ const PandalCard = React.memo(({ pandal }) => {
             className="flex-1 bg-secondary hover:bg-secondary-dark active:scale-95 text-white px-4 py-3 rounded-xl text-center transition-all duration-200 flex items-center justify-center font-inter font-semibold shadow-sm"
           >
             <Navigation className="w-4 h-4 mr-2" />
-            <span>{t('viewOnMaps')}</span>
+            {t('navigate')}
           </a>
+          {translatedPandal.reelURL ? (
+            <a
+              href={translatedPandal.reelURL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 bg-purple-500 hover:bg-purple-600 active:scale-95 text-white px-4 py-3 rounded-xl text-center transition-all duration-200 flex items-center justify-center font-inter font-semibold shadow-sm"
+            >
+              <Video className="w-4 h-4 mr-2" />
+              {t('reel')}
+            </a>
+          ) : (
+            <button
+              disabled
+              className="flex-1 bg-gray-300 text-gray-500 px-4 py-3 rounded-xl text-center transition-all duration-200 flex items-center justify-center font-inter font-semibold shadow-sm cursor-not-allowed"
+            >
+              <Video className="w-4 h-4 mr-2" />
+              {t('reel')}
+            </button>
+          )}
           <button
             onClick={handleNativeShare}
             className="flex-1 bg-primary hover:bg-primary-dark active:scale-95 text-white px-4 py-3 rounded-xl text-center transition-all duration-200 flex items-center justify-center font-inter font-semibold shadow-sm"
           >
             <Share2 className="w-4 h-4 mr-2" />
-            <span>{t('share')}</span>
+            {t('share')}
           </button>
         </div>
 
       
       </div>
+
     </div>
   );
 });
