@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Bot, Send, Phone } from 'lucide-react';
 import { generateAIResponse } from '../config/gemini.js';
+import { trackAppEvents } from '../utils/analytics.js';
 
 const AIChatbot = ({ pandals }) => {
   const [messages, setMessages] = useState([
@@ -43,6 +44,9 @@ const AIChatbot = ({ pandals }) => {
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
 
+    // Track AI chat message
+    trackAppEvents.aiChatMessage(inputMessage.length);
+
     const userMessage = {
       id: Date.now(),
       text: inputMessage,
@@ -80,6 +84,11 @@ const AIChatbot = ({ pandals }) => {
       handleSendMessage();
     }
   };
+
+  // Track when chatbot is opened
+  useEffect(() => {
+    trackAppEvents.aiChatStart();
+  }, []);
 
   return (
     <div className="h-full flex flex-col">

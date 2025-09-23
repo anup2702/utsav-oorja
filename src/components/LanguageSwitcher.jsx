@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Globe, Check } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext.jsx';
+import { trackAppEvents } from '../utils/analytics.js';
 
 const LanguageSwitcher = () => {
   const { language, changeLanguage } = useLanguage();
@@ -17,6 +18,8 @@ const LanguageSwitcher = () => {
   const handleLanguageChange = (langCode) => {
     changeLanguage(langCode);
     setIsOpen(false);
+    // Track language change
+    trackAppEvents.languageChange(langCode);
   };
 
   return (

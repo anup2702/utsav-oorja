@@ -1,30 +1,39 @@
-// Simplified analytics without external dependencies
-// Will be enhanced once packages are installed
+import ReactGA from 'react-ga4';
 
 // Google Analytics Configuration
 const GA_TRACKING_ID = process.env.REACT_APP_GA_TRACKING_ID || 'G-XXXXXXXXXX';
 
-// Initialize Google Analytics (placeholder)
+// Initialize Google Analytics
 export const initGA = () => {
   if (GA_TRACKING_ID && GA_TRACKING_ID !== 'G-XXXXXXXXXX') {
-    console.log('Analytics initialized with ID:', GA_TRACKING_ID);
-    // TODO: Initialize ReactGA once package is installed
+    ReactGA.initialize(GA_TRACKING_ID, {
+      testMode: process.env.NODE_ENV === 'development',
+      debug: process.env.NODE_ENV === 'development'
+    });
+    console.log('Google Analytics initialized with ID:', GA_TRACKING_ID);
+  } else {
+    console.warn('Google Analytics not initialized: Missing or invalid tracking ID');
   }
 };
 
-// Track page views (placeholder)
+// Track page views
 export const trackPageView = (path) => {
   if (GA_TRACKING_ID && GA_TRACKING_ID !== 'G-XXXXXXXXXX') {
+    ReactGA.send({ hitType: 'pageview', page: path });
     console.log('Page view tracked:', path);
-    // TODO: Track with ReactGA once package is installed
   }
 };
 
-// Track custom events (placeholder)
+// Track custom events
 export const trackEvent = (action, category, label, value) => {
   if (GA_TRACKING_ID && GA_TRACKING_ID !== 'G-XXXXXXXXXX') {
+    ReactGA.event({
+      action: action,
+      category: category,
+      label: label,
+      value: value
+    });
     console.log('Event tracked:', { action, category, label, value });
-    // TODO: Track with ReactGA once package is installed
   }
 };
 

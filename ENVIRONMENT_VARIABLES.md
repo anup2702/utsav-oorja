@@ -62,6 +62,15 @@ Add environment variables in Vercel dashboard:
 3. Get your Measurement ID (starts with G-)
 4. Add it as `REACT_APP_GA_TRACKING_ID`
 
+**Note**: The app uses `react-ga4` for Google Analytics 4 tracking. Analytics will automatically track:
+- Page views
+- Pandal interactions (votes, favorites, shares)
+- Metro station clicks
+- Language changes
+- AI chatbot usage
+- Tab navigation
+- Welcome screen interactions
+
 ### 5. Google Translate API (Optional)
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Enable the Translation API

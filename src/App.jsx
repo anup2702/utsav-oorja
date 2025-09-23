@@ -15,7 +15,6 @@ import { useTranslation } from './hooks/useTranslation.js';
 import { useFavorites } from './contexts/FavoritesContext.jsx';
 import WelcomeScreen from './components/WelcomeScreen.jsx';
 import VoteDebugPanel from './components/VoteDebugPanel.jsx';
-import { initGA } from './utils/analytics.js';
 import { useAnalytics } from './hooks/useAnalytics.js';
 // import { Analytics } from "@vercel/analytics/react" // TODO: Enable once package is installed
 import { 
@@ -49,10 +48,7 @@ const AppContent = () => {
   const { showWelcome, closeWelcome } = useWelcome();
   const { trackEvent } = useAnalytics();
 
-  // Initialize analytics
-  useEffect(() => {
-    initGA();
-  }, []);
+  // Analytics is now initialized in useAnalytics hook
 
   // Keyboard shortcut for vote debug panel (Ctrl+Shift+V)
   useEffect(() => {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Train, Map, Clock, CreditCard, Info, X, ChevronLeft } from 'lucide-react';
 import { useTranslation } from '../hooks/useTranslation';
+import { trackAppEvents } from '../utils/analytics.js';
 
 const MetroGuide = React.memo(({ pandals }) => {
   const [selectedStation, setSelectedStation] = useState(null);
@@ -72,6 +73,8 @@ const MetroGuide = React.memo(({ pandals }) => {
     if (stationPandals.length > 0) {
       setSelectedStation(stationName);
       setSelectedLine(lineName);
+      // Track metro station click
+      trackAppEvents.metroStationClick(stationName, lineName);
     }
   };
 
@@ -84,6 +87,8 @@ const MetroGuide = React.memo(({ pandals }) => {
   // Handle line filter selection
   const handleLineFilter = (lineName) => {
     setActiveLineFilter(lineName);
+    // Track line filter change
+    trackAppEvents.filter('metro_line', lineName);
   };
 
   // Get filtered lines to display

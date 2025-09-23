@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from '../hooks/useTranslation';
+import { trackAppEvents } from '../utils/analytics.js';
 
 const WelcomeScreen = ({ onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -15,6 +16,9 @@ const WelcomeScreen = ({ onClose }) => {
   }, []);
 
   const handleGetStarted = () => {
+    // Track welcome screen close
+    trackAppEvents.welcomeScreenClose();
+    
     setIsVisible(false);
     setTimeout(() => {
       onClose();

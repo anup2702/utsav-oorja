@@ -1,10 +1,14 @@
 import { useEffect } from 'react';
-import { trackPageView, trackAppEvents } from '../utils/analytics.js';
+import { initGA, trackPageView, trackAppEvents } from '../utils/analytics.js';
 
 // Custom hook for analytics
 export const useAnalytics = () => {
-  // Track initial page view
+  // Initialize Google Analytics and track initial page view
   useEffect(() => {
+    // Initialize GA4
+    initGA();
+    
+    // Track initial page view
     trackPageView(window.location.pathname + window.location.search);
   }, []);
 
