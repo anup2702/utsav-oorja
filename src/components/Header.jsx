@@ -72,7 +72,7 @@ const Header = ({ activeTab, setActiveTab }) => {
             </button>
             
             {/* Buy Me a Coffee Button */}
-            {/* <a
+            <a
               href="https://buymeacoffee.com/anup2702"
               target="_blank"
               rel="noopener noreferrer"
@@ -80,7 +80,7 @@ const Header = ({ activeTab, setActiveTab }) => {
               title="Buy me a coffee"
             >
               ☕
-            </a> */}
+            </a>
             
             <LanguageSwitcher />
           </div>
