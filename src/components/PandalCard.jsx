@@ -268,7 +268,7 @@ const PandalCard = React.memo(({ pandal }) => {
             className="flex-1 bg-secondary hover:bg-secondary-dark active:scale-95 text-white px-4 py-3 rounded-xl text-center transition-all duration-200 flex items-center justify-center font-inter font-semibold shadow-sm"
           >
             <Navigation className="w-4 h-4 mr-2" />
-            {t('navigate')}
+            {t('map')}
           </a>
           {translatedPandal.reelURL ? (
             <a
