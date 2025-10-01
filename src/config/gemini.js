@@ -40,7 +40,6 @@ User message: ${userMessage}
     const response = await result.response;
     return response.text();
   } catch (error) {
-    console.error('Error generating AI response:', error);
     throw new Error('Failed to generate AI response');
   }
 };

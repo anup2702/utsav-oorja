@@ -20,7 +20,6 @@ const loadGA = () => {
       page_location: window.location.href
     });
     
-    console.log('Google Analytics initialized with ID:', GA_TRACKING_ID);
     return true;
   }
   return false;
@@ -31,7 +30,6 @@ export const initGA = () => {
   if (GA_TRACKING_ID && GA_TRACKING_ID !== 'G-XXXXXXXXXX') {
     loadGA();
   } else {
-    console.warn('Google Analytics not initialized: Missing or invalid tracking ID');
   }
 };
 
@@ -43,7 +41,6 @@ export const trackPageView = (path) => {
       page_title: document.title,
       page_location: window.location.href
     });
-    console.log('Page view tracked:', path);
   }
 };
 
@@ -55,7 +52,6 @@ export const trackEvent = (action, category, label, value) => {
       event_label: label,
       value: value
     });
-    console.log('Event tracked:', { action, category, label, value });
   }
 };
 

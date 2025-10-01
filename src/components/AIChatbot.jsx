@@ -33,7 +33,6 @@ const AIChatbot = ({ pandals }) => {
       setIsLoading(false);
       return response;
     } catch (error) {
-      console.error('Error getting AI response:', error);
       setIsLoading(false);
       
       // Fallback response if AI fails
@@ -67,7 +66,6 @@ const AIChatbot = ({ pandals }) => {
       };
       setMessages(prev => [...prev, botMessage]);
     } catch (error) {
-      console.error('Error getting AI response:', error);
       const errorMessage = {
         id: Date.now() + 1,
         text: "Sorry, I'm having trouble connecting right now. Please try again later! 😅",

@@ -59,7 +59,6 @@ const PandalCard = React.memo(({ pandal }) => {
       // Track analytics
       trackAppEvents.pandalVote(translatedPandal.name);
     } catch (error) {
-      console.error('Error voting:', error);
     } finally {
       setIsVoting(false);
       setTimeout(() => setVoteAnimation(false), 1000);
@@ -143,7 +142,6 @@ const PandalCard = React.memo(({ pandal }) => {
           url: translatedPandal.mapsLink,
         });
       } catch (error) {
-        console.log('Error sharing:', error);
       }
     } else {
       // Fallback to copying to clipboard

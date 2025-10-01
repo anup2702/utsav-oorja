@@ -77,7 +77,6 @@ const AppContent = () => {
         setLoading(false);
       },
       (error) => {
-        console.error('Error fetching pandals:', error);
         setError('Failed to load pandals. Please check your Firebase configuration.');
         setLoading(false);
       }

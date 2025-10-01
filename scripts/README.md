@@ -1,109 +1,140 @@
-# Pandal Data Update Scripts
+# Database Maintenance Scripts
 
-This folder contains scripts to update and manage pandal data in the Firebase Firestore database.
+This folder contains scripts for maintaining and analyzing the Firebase Firestore database after initial data setup.
 
-## Available Scripts
+## 🔒 Security Setup (IMPORTANT)
 
-### 1. `updateAllPandalData.js` (Recommended)
-**Comprehensive script that handles everything:**
-- Updates existing pandals with local images
-- Adds new pandals matching the images in `/public/images/`
-- Enhances all pandals with detailed information
-- Maps all 7 images to appropriate pandals
+**Before running any scripts, you must set up secure environment variables:**
 
-**Usage:**
-```bash
-node scripts/updateAllPandalData.js
-```
+1. **Copy the environment template:**
+   ```bash
+   cp env.example .env
+   ```
 
-### 2. `updatePandalImages.js`
-**Updates existing pandals with local images and enhanced details:**
-- Changes imageURLs from external URLs to local `/images/` paths
-- Adds descriptions, crowd status, tips, and metro information
-- Only updates existing pandals
+2. **Fill in your Firebase credentials** in the `.env` file:
+   ```env
+   FIREBASE_API_KEY=your-actual-firebase-api-key
+   FIREBASE_AUTH_DOMAIN=your-project-id.firebaseapp.com
+   FIREBASE_PROJECT_ID=your-project-id
+   FIREBASE_STORAGE_BUCKET=your-project-id.firebasestorage.app
+   FIREBASE_MESSAGING_SENDER_ID=your-sender-id
+   FIREBASE_APP_ID=your-app-id
+   FIREBASE_MEASUREMENT_ID=your-measurement-id
+   ```
 
-**Usage:**
-```bash
-node scripts/updatePandalImages.js
-```
-
-### 3. `addNewPandals.js`
-**Adds new pandals that match the images in the public folder:**
-- Creates new pandal entries for each image
-- Includes comprehensive details and metro information
-- Only adds new pandals, doesn't update existing ones
-
-**Usage:**
-```bash
-node scripts/addNewPandals.js
-```
-
-## Image Mapping
-
-The scripts map the following images to pandals:
-
-| Image File | Pandal Name | Location |
-|------------|-------------|----------|
-| `kumartulipark-sarbojanin.jpg` | Kumartuli Park Sarbojanin | Kumartuli, North Kolkata |
-| `collegesquare.jpg` | College Square Sarbojanin | College Street, Central Kolkata |
-| `santoshmitrasqaure.jpeg` | Santosh Mitra Square | Bowbazar, Central Kolkata |
-| `ajblock-saltlake-karunamoyee.jpg` | AJ Block Salt Lake Karunamoyee | AJ Block, Salt Lake |
-| `newtown-sarbojanin.jpg` | New Town Sarbojanin | New Town, North 24 Parganas |
-| `fdblock-saltlake.jpg` | FD Block Salt Lake | FD Block, Salt Lake |
-| `akblock-karunamoyee.jpg` | AK Block Karunamoyee | AK Block, Salt Lake |
-
-## Enhanced Data Fields
-
-Each pandal now includes:
-
-- **Local Image**: Uses `/images/` folder instead of external URLs
-- **Description**: Detailed description of the pandal
-- **Crowd Status**: High/Medium/Low crowd levels
-- **Instagrammable Spots**: Photo-worthy locations and features
-- **Tips**: Helpful visitor tips and best times to visit
-- **Metro Station**: Nearest metro station with distance and walk time
-- **Votes**: Current vote count for popularity
-
-## Prerequisites
-
-1. **Firebase Configuration**: Ensure your Firebase config is correct in the scripts
-2. **Node.js**: Make sure Node.js is installed
-3. **Firebase Project**: Your Firestore database should be set up
-4. **Images**: Ensure all images are in the `/public/images/` folder
-
-## Running the Scripts
-
-1. **Install dependencies** (if not already done):
+3. **Install dependencies:**
    ```bash
    npm install
    ```
 
-2. **Run the comprehensive update** (recommended):
+## 📋 Available Maintenance Scripts
+
+### 1. `checkDuplicatePandals.js`
+**Checks for duplicate pandal entries in the database:**
+- Scans all pandals for duplicate names
+- Reports potential duplicates
+- Helps maintain data quality
+
+**Usage:**
+```bash
+node scripts/checkDuplicatePandals.js
+```
+
+### 2. `removeDuplicatePandals.js`
+**Removes duplicate pandal entries:**
+- Identifies and removes duplicate records
+- Keeps the most recent entry
+- Use with caution - creates database backups
+
+**Usage:**
+```bash
+node scripts/removeDuplicatePandals.js
+```
+
+### 3. `analyzeMissingPandalData.js`
+**Analyzes pandal data for missing fields:**
+- Checks for incomplete pandal records
+- Reports missing images, descriptions, or metro data
+- Helps identify data quality issues
+
+**Usage:**
+```bash
+node scripts/analyzeMissingPandalData.js
+```
+
+## 🗂️ File Structure
+
+```
+scripts/
+├── checkDuplicatePandals.js    # Duplicate detection
+├── removeDuplicatePandals.js   # Duplicate removal
+├── analyzeMissingPandalData.js # Data quality analysis
+├── firebase-config.js          # Secure Firebase configuration
+└── README.md                   # This documentation
+```
+
+## 🚀 Quick Start
+
+1. **Set up environment variables** (see Security Setup above)
+2. **Check for data quality issues:**
    ```bash
-   node scripts/updateAllPandalData.js
+   node scripts/analyzeMissingPandalData.js
+   ```
+3. **Check for duplicates:**
+   ```bash
+   node scripts/checkDuplicatePandals.js
+   ```
+4. **Remove duplicates if needed:**
+   ```bash
+   node scripts/removeDuplicatePandals.js
    ```
 
-3. **Verify the updates** in your Firebase console
+## 🔧 Prerequisites
 
-## Expected Output
+- ✅ Node.js installed
+- ✅ Firebase project set up
+- ✅ Environment variables configured
+- ✅ Existing data in Firestore database
 
-The script will:
-- ✅ Update existing pandals with local images
-- ➕ Add new pandals for unmatched images
-- 📝 Enhance all pandals with detailed information
-- 🎯 Prepare data for production deployment
+## 🐛 Troubleshooting
 
-## Troubleshooting
-
-- **Permission Errors**: Ensure your Firebase service account has write permissions
+- **Environment Variables Error**: Make sure `.env` file exists and contains valid Firebase credentials
+- **Permission Errors**: Ensure your Firebase service account has read/write permissions
 - **Network Issues**: Check your internet connection and Firebase project status
-- **Image Not Found**: Verify all images exist in `/public/images/` folder
-- **Duplicate Data**: The scripts handle existing data gracefully
+- **No Data Found**: Verify your Firestore database has pandal data
 
-## Next Steps
+## 🔐 Security Notes
 
-After running the scripts:
-1. Test the app locally to ensure images load correctly
-2. Deploy to Vercel
-3. Verify all pandals display with local images
-4. Check analytics tracking for pandal interactions
+- ⚠️ **Never commit `.env` file** to version control
+- ✅ All Firebase credentials are stored securely in environment variables
+- ✅ Scripts use centralized `firebase-config.js` for configuration
+- ✅ No hardcoded API keys or sensitive data in script files
+
+## 📝 When to Use These Scripts
+
+**Use these scripts for:**
+- ✅ Data quality maintenance
+- ✅ Duplicate detection and removal
+- ✅ Database analysis and reporting
+- ✅ Troubleshooting data issues
+
+**Don't use these scripts for:**
+- ❌ Initial data setup (data already exists)
+- ❌ Adding new pandals (use Firebase Console or admin panel)
+- ❌ Bulk data updates (data is already current)
+
+## 🎯 Production Notes
+
+Since all initial data has been uploaded to Firebase:
+- These scripts are for **maintenance only**
+- Use sparingly in production
+- Always backup data before running removal scripts
+- Monitor database changes carefully
+
+## 📞 Support
+
+If you encounter issues:
+1. Check your Firebase project permissions
+2. Verify environment variables are correct
+3. Ensure database has existing pandal data
+4. Review Firebase Console for any error logs

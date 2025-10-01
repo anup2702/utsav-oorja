@@ -57,7 +57,6 @@ class TranslateService {
       this.cache.set(cacheKey, translatedText);
       return translatedText;
     } catch (error) {
-      console.error('Translation error:', error);
       // Return original text if translation fails
       return text;
     }

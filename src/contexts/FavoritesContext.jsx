@@ -17,7 +17,6 @@ export const FavoritesProvider = ({ children }) => {
       const stored = localStorage.getItem('kolkata-pandal-favorites');
       return stored ? JSON.parse(stored) : [];
     } catch (error) {
-      console.error('Error loading favorites from localStorage:', error);
       return [];
     }
   });
@@ -27,7 +26,6 @@ export const FavoritesProvider = ({ children }) => {
     try {
       localStorage.setItem('kolkata-pandal-favorites', JSON.stringify(favorites));
     } catch (error) {
-      console.error('Error saving favorites to localStorage:', error);
     }
   }, [favorites]);
 

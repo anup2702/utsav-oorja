@@ -10,7 +10,6 @@ class VoteManager {
       const votedPandals = localStorage.getItem(this.STORAGE_KEY);
       return votedPandals ? JSON.parse(votedPandals) : [];
     } catch (error) {
-      console.error('Error reading voted pandals from localStorage:', error);
       return [];
     }
   }
@@ -32,7 +31,6 @@ class VoteManager {
       }
       return false;
     } catch (error) {
-      console.error('Error adding vote to localStorage:', error);
       return false;
     }
   }
@@ -45,7 +43,6 @@ class VoteManager {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(updatedPandals));
       return true;
     } catch (error) {
-      console.error('Error removing vote from localStorage:', error);
       return false;
     }
   }
@@ -56,7 +53,6 @@ class VoteManager {
       localStorage.removeItem(this.STORAGE_KEY);
       return true;
     } catch (error) {
-      console.error('Error clearing votes from localStorage:', error);
       return false;
     }
   }

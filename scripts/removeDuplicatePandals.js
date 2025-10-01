@@ -2,16 +2,7 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
 
-// Your Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyCQEJpWNnM60tEDsjLo3iFArRIeJRhQRgI",
-  authDomain: "durgapuja-dc996.firebaseapp.com",
-  projectId: "durgapuja-dc996",
-  storageBucket: "durgapuja-dc996.firebasestorage.app",
-  messagingSenderId: "599154572247",
-  appId: "1:599154572247:web:7a8f806da9987e879de992",
-  measurementId: "G-LD6R89L7TS"
-};
+
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
